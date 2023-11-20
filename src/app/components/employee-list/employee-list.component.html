@@ -1,0 +1,232 @@
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+  crossorigin="anonymous"
+/>
+
+<div class="login-container">
+  <div class="login-box">
+    <h1 class="logo">
+      <img class="imglogo" src="assets/management.png" alt="EMS Icon" />
+    </h1>
+    <h1 class="mainheader">Employee List</h1>
+    <table>
+      <tr>
+        <th>Employee ID</th>
+        <th>Department</th>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Start Date</th>
+        <th>Holiday Entitlement</th>
+        <th>Actions</th>
+      </tr>
+      <tr *ngFor="let employee of employees">
+        <td>{{ employee.employeeID }}</td>
+        <td>{{ employee.departmentName }}</td>
+        <td>{{ employee.firstName }} {{ employee.surname }}</td>
+        <td>{{ employee.email }}</td>
+        <td>{{ employee.date | date : "dd/MM/YYYY" }}</td>
+        <td>{{ employee.holidayEntitlement }} hours</td>
+        <td>
+          <button
+            class="editbtn"
+            title="Edit"
+            (click)="openEditModal(employee)"
+          >
+            <i class="fas fa-pen-square"></i>
+          </button>
+          <button
+            class="deletebtn"
+            title="Delete"
+            (click)="openDeleteModal(employee)"
+          >
+            <i class="fas fa-trash"></i>
+          </button>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="7">
+          <button class="addbtn" (click)="openAddModal()">Add</button>
+        </td>
+      </tr>
+    </table>
+  </div>
+</div>
+
+<div class="modal" *ngIf="showModal1">
+  <div class="modal-content">
+    <span class="close" (click)="closeAddModal()">&times;</span>
+
+    <form (submit)="addNewEmployee()">
+      <label for="employeeId">Employee ID:</label>
+      <input
+        type="text"
+        id="employeeId"
+        [(ngModel)]="employee.employeeID"
+        name="employeeId"
+        disabled="disabled"
+        readonly
+      />
+
+      <label for="department">Department:</label>
+      <input
+        type="text"
+        id="department"
+        [(ngModel)]="employee.departmentName"
+        name="departmentName"
+        required
+      />
+
+      <label for="department">Department ID:</label>
+      <input
+        type="text"
+        id="department"
+        [(ngModel)]="employee.departmentID"
+        name="departmentName"
+        required
+      />
+
+      <label for="name">Name:</label>
+      <input
+        type="text"
+        id="name"
+        [(ngModel)]="employee.firstName"
+        name="firstName"
+        required
+      />
+
+      <label for="surname">Surname:</label>
+      <input
+        type="text"
+        id="surname"
+        [(ngModel)]="employee.surname"
+        name="surname"
+        required
+      />
+
+      <label for="email">Email:</label>
+      <input
+        type="email"
+        id="email"
+        [(ngModel)]="employee.email"
+        name="email"
+        required
+      />
+
+      <label for="startDate">Start Date:</label>
+      <input
+        type="date"
+        id="startDate"
+        [(ngModel)]="employee.date"
+        name="startDate"
+        required
+      />
+
+      <label for="holidayEntitlement">Holiday Entitlement:</label>
+      <input
+        type="number"
+        id="holidayEntitlement"
+        [(ngModel)]="employee.holidayEntitlement"
+        name="holidayEntitlement"
+        required
+      />
+
+      <button class="addbtn" type="submit">Add Employee</button>
+    </form>
+  </div>
+</div>
+
+<div class="modal" *ngIf="showModal2">
+  <div class="modal-content">
+    <span class="close" (click)="closeEditModal()">&times;</span>
+
+    <form (submit)="editEmployee()">
+      <label for="employeeId">Employee ID:</label>
+      <input
+        type="text"
+        id="employeeId"
+        *ngIf="selectedEmployee"
+        [value]="selectedEmployee.employeeID"
+        name="employeeId"
+        readonly
+        disabled
+      />
+
+      <label for="department">Department:</label>
+      <input
+        type="text"
+        id="department"
+        *ngIf="selectedEmployee"
+        [(ngModel)]="selectedEmployee.departmentName"
+        name="departmentName"
+        required
+      />
+
+      <label for="name">Name:</label>
+      <input
+        type="text"
+        id="name"
+        *ngIf="selectedEmployee"
+        [(ngModel)]="selectedEmployee.firstName"
+        name="firstName"
+        required
+      />
+
+      <label for="surname">Surname:</label>
+      <input
+        type="text"
+        id="surname"
+        *ngIf="selectedEmployee"
+        [(ngModel)]="selectedEmployee.surname"
+        name="surname"
+        required
+      />
+
+      <label for="email">Email:</label>
+      <input
+        type="email"
+        id="email"
+        *ngIf="selectedEmployee"
+        [(ngModel)]="selectedEmployee.email"
+        name="email"
+        required
+      />
+
+      <label for="startDate">Start Date:</label>
+      <input
+        type="date"
+        id="startDate"
+        *ngIf="selectedEmployee"
+        [(ngModel)]="selectedEmployee.date"
+        name="startDate"
+        required
+      />
+
+      <label for="holidayEntitlement">Holiday Entitlement:</label>
+      <input
+        type="number"
+        id="holidayEntitlement"
+        *ngIf="selectedEmployee"
+        [(ngModel)]="selectedEmployee.holidayEntitlement"
+        name="holidayEntitlement"
+        required
+      />
+
+      <button class="addbtn" type="submit">Save Changes</button>
+    </form>
+  </div>
+</div>
+
+<div class="modal" *ngIf="showModal3">
+  <div class="modal-contentdel">
+    <span class="close" (click)="closeDeleteModal()">&times;</span>
+
+    <form (submit)="deleteEmployee()">
+      <label class="deleteconfirm" for="deleteConfirmation"
+        >Are you sure you want to delete this employee?</label
+      >
+
+      <button class="deletebtnmodal" type="submit">Delete</button>
+    </form>
+  </div>
+</div>
